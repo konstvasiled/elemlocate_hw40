@@ -21,10 +21,10 @@ public class Safari {
         driver.manage().window().maximize();
         driver.manage().timeouts().implicitlyWait(0, TimeUnit.SECONDS);
         WebDriverWait delay = new WebDriverWait(driver, 10);
-        //Wait<WebDriver> longdelay = new FluentWait<WebDriver>(driver)
-        //        .withTimeout(10, TimeUnit.SECONDS)
-        //        .pollingEvery(1, TimeUnit.SECONDS)
-        //        .ignoring(NoSuchElementException.class);
+        Wait<WebDriver> customdelay = new FluentWait<WebDriver>(driver)
+                .withTimeout(10, TimeUnit.SECONDS)
+                .pollingEvery(1, TimeUnit.SECONDS)
+                .ignoring(NoSuchElementException.class);
         final long teststart = (System.currentTimeMillis());
         driver.get(url);
 
@@ -41,17 +41,17 @@ public class Safari {
 
         WebElement email = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='email']")));email.clear(); email.sendKeys(email_add);
         WebElement pass = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='pass']")));pass.clear(); pass.sendKeys(password);
-        delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@value='Log In']"))).click();
+        delay.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@value='Log In']"))).click();
 
-        //Совершенно не пойму как запустить FluentWait
-        //WebElement profile = longdelay.until(new Function<WebDriver, WebElement>() {
-        //    public WebElement apply(WebDriver driver) {
-        //        return driver.findElement(By.xpath("//a[@title='Profile']"));}}); profile.click();
+        WebElement profile = customdelay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='Profile']")));profile.click();
+        String freindscount = customdelay.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-tab-key='friends']//child::span[1]"))).getText();
 
-        WebElement profile = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='Profile']")));profile.click();
-        String freindscount = delay.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-tab-key='friends']//child::span[1]"))).getText();
-        WebElement menu = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@id='pageLoginAnchor']"))); menu.click();
-        WebElement logout = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//form[@class='_w0d']//ancestor::span[2]"))); logout.click();
+        WebElement menu = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@id='pageLoginAnchor']")));;
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", menu);
+
+        WebElement logout = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//form[@class='_w0d']//ancestor::span[2]")));
+        ((JavascriptExecutor) driver).executeScript("arguments[0].click();", logout);
+
         driver.quit();
         final long benchmark = (((System.currentTimeMillis()) - teststart) / 1000);
 

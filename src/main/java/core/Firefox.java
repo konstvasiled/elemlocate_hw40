@@ -50,12 +50,6 @@ public class Firefox {
         WebElement email = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@type='email']")));email.clear(); email.sendKeys(email_add);
         WebElement pass = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@name='pass']")));pass.clear(); pass.sendKeys(password);
         delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@value='Log In']"))).click();
-
-        //Совершенно не пойму как запустить FluentWait
-        //WebElement profile = longdelay.until(new Function<WebDriver, WebElement>() {
-        //    public WebElement apply(WebDriver driver) {
-        //        return driver.findElement(By.xpath("//a[@title='Profile']"));}}); profile.click();
-
         WebElement profile = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@title='Profile']")));profile.click();
         String freindscount = delay.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[@data-tab-key='friends']//child::span[1]"))).getText();
         WebElement menu = delay.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//a[@id='pageLoginAnchor']"))); menu.click();
